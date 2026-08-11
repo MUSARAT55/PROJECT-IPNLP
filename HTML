@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VisionLab | Image Processing Studio</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="brand">
+        <div class="brand-icon">V</div>
+
+        <div>
+            <h2>Vision<span>Lab</span></h2>
+            <small>IMAGE PROCESSING STUDIO</small>
+        </div>
+    </div>
+
+    <div class="status">
+        <span class="status-dot"></span>
+        SYSTEM ONLINE
+    </div>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main-container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-badge">
+            <span>●</span> IMAGE PROCESSING PROJECT
+        </div>
+
+        <h1>
+           IMAGE PROCESSING PROJECT<br>
+            <span>DEMO.</span>
+        </h1>
+
+        <p>
+            Capture an image using your webcam and apply powerful
+            image-processing techniques with OpenCV.
+        </p>
+
+    </section>
+
+
+    <!-- ================= CAMERA WORKSPACE ================= -->
+
+    <section class="workspace">
+
+        <!-- LEFT CAMERA -->
+
+        <div class="panel camera-panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <span class="label">01</span>
+                    <h3>Live Camera</h3>
+                </div>
+
+                <div class="live-badge">
+                    <span></span> LIVE
+                </div>
+
+            </div>
+
+
+            <div class="camera-container">
+
+                <video
+                    id="video"
+                    autoplay
+                    playsinline>
+                </video>
+
+                <div class="camera-placeholder"
+                     id="cameraPlaceholder">
+
+                    <div class="camera-icon">◉</div>
+
+                    <h4>Camera Ready</h4>
+
+                    <p>
+                        Start your camera to begin
+                    </p>
+
+                </div>
+
+                <div class="camera-overlay">
+
+                    <div class="corner top-left"></div>
+                    <div class="corner top-right"></div>
+                    <div class="corner bottom-left"></div>
+                    <div class="corner bottom-right"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="camera-controls">
+
+                <button
+                    class="btn btn-primary"
+                    onclick="startCamera()">
+
+                    <span>▶</span>
+                    Start Camera
+
+                </button>
+
+
+                <button
+                    class="btn btn-capture"
+                    onclick="captureImage()">
+
+                    <span>●</span>
+                    Capture
+
+                </button>
+
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="stopCamera()">
+
+                    Stop
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT CAPTURED IMAGE -->
+
+        <div class="panel result-panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <span class="label">02</span>
+                    <h3>Captured Image</h3>
+                </div>
+
+                <span class="resolution">
+                    LIVE PREVIEW
+                </span>
+
+            </div>
+
+
+            <div class="image-container">
+
+                <img
+                    id="capturedImage"
+                    alt="Captured Image">
+
+                <div
+                    class="empty-state"
+                    id="captureText">
+
+                    <div class="empty-icon">
+                        +
+                    </div>
+
+                    <h4>No Image Captured</h4>
+
+                    <p>
+                        Your captured frame will appear here
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= PROCESSING ================= -->
+
+    <section class="processing-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="label">03</span>
+
+                <h2>Image Processing</h2>
+
+                <p>
+                    Select an operation to transform your captured image.
+                </p>
+
+            </div>
+
+            <div class="opencv-badge">
+                POWERED BY <strong>OpenCV</strong>
+            </div>
+
+        </div>
+
+
+        <div class="tools-grid">
+
+            <button
+                class="tool-card"
+                onclick="processImage('original')">
+
+                <div class="tool-number">01</div>
+
+                <div class="tool-icon">◈</div>
+
+                <h3>Original</h3>
+
+                <p>
+                    View the original captured frame
+                </p>
+
+            </button>
+
+
+            <button
+                class="tool-card"
+                onclick="processImage('gray')">
+
+                <div class="tool-number">02</div>
+
+                <div class="tool-icon">◐</div>
+
+                <h3>Grayscale</h3>
+
+                <p>
+                    Convert image into grayscale
+                </p>
+
+            </button>
+
+
+            <button
+                class="tool-card"
+                onclick="processImage('binary')">
+
+                <div class="tool-number">03</div>
+
+                <div class="tool-icon">◑</div>
+
+                <h3>Binary</h3>
+
+                <p>
+                    Apply binary thresholding
+                </p>
+
+            </button>
+
+
+            <button
+                class="tool-card"
+                onclick="processImage('rgb')">
+
+                <div class="tool-number">04</div>
+
+                <div class="tool-icon">RGB</div>
+
+                <h3>Gray → RGB</h3>
+
+                <p>
+                    Convert grayscale back to RGB
+                </p>
+
+            </button>
+
+
+            <button
+                class="tool-card"
+                onclick="processImage('hsv')">
+
+                <div class="tool-number">05</div>
+
+                <div class="tool-icon">HSV</div>
+
+                <h3>HSV</h3>
+
+                <p>
+                    Explore HSV color space
+                </p>
+
+            </button>
+
+
+            <button
+                class="tool-card"
+                onclick="processImage('equalize')">
+
+                <div class="tool-number">06</div>
+
+                <div class="tool-icon">▥</div>
+
+                <h3>Histogram</h3>
+
+                <p>
+                    Enhance image distribution
+                </p>
+
+            </button>
+
+
+            <button
+                class="tool-card"
+                onclick="processImage('contrast')">
+
+                <div class="tool-number">07</div>
+
+                <div class="tool-icon">◒</div>
+
+                <h3>Contrast</h3>
+
+                <p>
+                    Enhance image contrast
+                </p>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= RESULT ================= -->
+
+    <section class="result-section">
+
+        <div class="result-heading">
+
+            <div>
+
+                <span class="label">04</span>
+
+                <h2>Processed Result</h2>
+
+            </div>
+
+            <div class="processing-status"
+                 id="processingStatus">
+
+                READY
+
+            </div>
+
+        </div>
+
+
+        <div class="result-workspace">
+
+            <div class="result-image-box">
+
+                <img
+                    id="processedImage"
+                    alt="Processed Image">
+
+                <div
+                    class="result-empty"
+                    id="processedText">
+
+                    <div class="result-icon">
+                        ✦
+                    </div>
+
+                    <h3>Ready to Process</h3>
+
+                    <p>
+                        Capture an image and select an
+                        operation above.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="result-actions">
+
+            <button
+                id="downloadBtn"
+                class="download-btn"
+                onclick="downloadImage()"
+                disabled>
+
+                <span>↓</span>
+                Download Result
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+
+    <section class="how-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="label">05</span>
+
+                <h2>How It Works</h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">01</div>
+
+                <h3>Start Camera</h3>
+
+                <p>
+                    Access your device camera directly
+                    from the browser.
+                </p>
+
+            </div>
+
+
+            <div class="step-line"></div>
+
+
+            <div class="step">
+
+                <div class="step-number">02</div>
+
+                <h3>Capture Frame</h3>
+
+                <p>
+                    Capture a high-quality frame
+                    from the live video.
+                </p>
+
+            </div>
+
+
+            <div class="step-line"></div>
+
+
+            <div class="step">
+
+                <div class="step-number">03</div>
+
+                <h3>Process</h3>
+
+                <p>
+                    OpenCV applies your selected
+                    image-processing technique.
+                </p>
+
+            </div>
+
+
+            <div class="step-line"></div>
+
+
+            <div class="step">
+
+                <div class="step-number">04</div>
+
+                <h3>Download</h3>
+
+                <p>
+                    Save your processed image
+                    to your device.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>Vision<span>Lab</span></h3>
+
+            <p>
+                A modern image-processing platform
+                built with Flask & OpenCV.
+            </p>
+
+        </div>
+
+        <div class="footer-tech">
+
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+            <span>Python</span>
+            <span>OpenCV</span>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+
+        © 2026 VisionLab · Image Processing Studio
+
+    </div>
+
+</footer>
+
+
+<canvas id="canvas"></canvas>
+
+
+<script
+    src="{{ url_for('static', filename='script.js') }}">
+</script>
+
+</body>
+
+</html>
